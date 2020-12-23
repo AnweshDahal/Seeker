@@ -1,18 +1,20 @@
+var userAgent = navigator.userAgent;
+var platform = "";
+
+if (userAgent.includes(" Edg")){
+  platform = "Edge"
+} else if (userAgent.includes(" Chrome")){
+  platform = "Chrome"
+}
+
+document.querySelector("#platform").innerHTML = platform;
+
 chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
   let thisTab = tabs[0];
   document.getElementById("title").innerHTML = thisTab.title;
   document.getElementById("url").innerHTML = thisTab.url;
 });
 
-// function getMetas() {
-//   chrome.tabs.executeScript(null, {
-//     file: 'getMetaData.js'
-//   }, function() {
-//     if (chrome.runtime.lastError){
-//       console.log("Error Occured");
-//     }
-//   });
-// }
 
 var siteCode = `
     var metaData = document.getElementsByTagName("meta");
@@ -21,7 +23,6 @@ var siteCode = `
     for (let i = 0; i < metaData.length; i++){
       let currTag = metaData[i];
       let currProperty = currTag.getAttribute("property");
-      console.log(currProperty)
       if (currProperty != null){
         if (currProperty === "og:site_name"){
           sitename = currTag.getAttribute("content");
@@ -97,5 +98,14 @@ function copyText(text){
 
   document.body.removeChild(dummy);
 
-  console.log("Done");
+
+  let toast = document.getElementById("toast");
+
+  console.log(toast);
+
+  toast.className = "show";
+
+  setTimeout(function() {
+    toast.className = toast.className.replace("show", "");
+  }, 3000);
 }

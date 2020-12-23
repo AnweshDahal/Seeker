@@ -7,7 +7,6 @@
   <style>
     body, html{
       font-family: "Manrope", sans-serif;
-
       margin: 0;
       width: 400px;
       min-height: 180px;
@@ -122,6 +121,42 @@
       font-weight: 500;
     }
 
+    #toast{
+      min-width: 150px;
+      margin-left: 10px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 2px;
+      padding: 16px;
+      position: fixed;
+      z-index: 10;
+      left: 100px;
+      bottom: 30px;
+      visibility: hidden;
+    }
+
+    .show{
+      visibility: visible !important;
+      -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    @-webkit-keyframes fadein{
+      from{bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;}
+    }
+
+    @keyframes fadein{
+      from{bottom: 0px; opacity: 0;} to {bottom: 30px; opacity: 1;}
+    }
+
+    @-webkit-keyframes fadeout{
+      from{bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;}
+    }
+
+    @keyframes fadeout{
+      from{bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;}
+    }
     
   </style>
   <title>Seeker</title>
@@ -129,7 +164,7 @@
 <body>
   <header>
     <div class="logo"><span class="logo-title">Seeker</span><span class="version">(v1.0.0)</span></div>
-    <div class="platform">for <strong>Chrome</strong></div>
+    <div class="platform">for <strong id="platform">Chrome</strong></div>
   </header>
   <div class="contents">
     <div class="p-info">
@@ -150,9 +185,10 @@
     </div>
   </div>
   <footer>
-    <a href="https://github.com/AnweshDahal/Seeker" class="link">Source Code</a>
+    <a href="https://github.com/AnweshDahal/Seeker" class="link" target="_blank">Source Code</a>
     <a href="#" class="link">Rate</a>
   </footer>
+  <div id="toast">Copied to Clipboard</div>
   <script src="./popup.js"></script>
 </body>
 </html>
