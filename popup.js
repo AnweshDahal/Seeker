@@ -1,4 +1,4 @@
-var userAgent = navigator.userAgent;
+var userAgent = navigator.userAgent; // getting the useragent for determining the browser
 var platform = "";
 
 if (userAgent.includes(" Edg")){
@@ -7,39 +7,19 @@ if (userAgent.includes(" Edg")){
   platform = "Chrome"
 }
 
-document.querySelector("#platform").innerHTML = platform;
+document.querySelector("#platform").innerHTML = platform; // adding the platform to the ext.
 
+// Querying the tabs
 chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-  let thisTab = tabs[0];
-  document.getElementById("title").innerHTML = thisTab.title;
-  document.getElementById("url").innerHTML = thisTab.url;
+  let thisTab = tabs[0]; // Selecting the current tab
+  document.getElementById("title").innerHTML = thisTab.title; // currTab -> title
+  document.getElementById("url").innerHTML = thisTab.url; // currTab -> url
 });
 
-
-var siteCode = `
-    var metaData = document.getElementsByTagName("meta");
-    var sitename = ""
-
-    for (let i = 0; i < metaData.length; i++){
-      let currTag = metaData[i];
-      let currProperty = currTag.getAttribute("property");
-      if (currProperty != null){
-        if (currProperty === "og:site_name"){
-          sitename = currTag.getAttribute("content");
-          break;
-        }
-      }
-    }
-
-    chrome.runtime.sendMessage({
-      method: "getMetaData",
-      siteName: sitename
-    });
-`
-
 function getMetas() {
+  // Injecting a script onto a page
   chrome.tabs.executeScript(null, {
-    code: siteCode
+    file: "getMetaData.js" // gets the metadata
   }, function() {
     if (chrome.runtime.lastError){
       console.log("Error Occured");
@@ -47,65 +27,106 @@ function getMetas() {
   });
 }
 
+// Checking for a message from the injected scripts
 chrome.runtime.onMessage.addListener(function(request, sender){
   if(request.method == "getMetaData"){
     document.getElementById("site_title").innerHTML = request.siteName
   }
 });
 
-window.onload = getMetas;
+window.onload = getMetas; // Injecting the script after the page loads completely
 
-document.getElementById("titleButton").addEventListener("click", (event) => {
-  copyTitle();
-})
+let copyBTNS = document.querySelectorAll(".cbtn");
 
-function copyTitle(){
-  let thisText = document.getElementById("title").innerHTML;
-  copyText(thisText);
+for (let i = 0; i < copyBTNS.length; i++){
+  copyBTNS[i].addEventListener("click", (event) => {
+    copyTitle2(event);
+  });
 }
 
-document.getElementById("siteButton").addEventListener("click", (event) => {
-  copySite();
-})
 
-function copySite(){ 
-  let thisText = document.getElementById("site_title").innerHTML;
-  copyText(thisText);
+function copyTitle2(e){
+  let whichBtn = e.target;
+  if (whichBtn.tagName == "IMG"){
+    whichBtn = whichBtn.parentElement;
+  }
+  whichBtn = whichBtn.getAttribute("id");
+  if(whichBtn == "titleButton"){
+    let thisText = document.getElementById("title").innerHTML;
+    copyText(thisText);
+  } else if (whichBtn == "siteButton"){
+    try {
+      let thisText = document.getElementById("site_name").innerHTML;
+      copyText(thisText);
+    } catch (TypeError) {
+      copyText("");
+    }
+  } else if (whichBtn == "urlButton"){
+    let thisText = document.getElementById("url").innerHTML;
+    copyText(thisText);
+  }else {
+    console.log("Error")
+  }
 }
 
-document.getElementById("urlButton").addEventListener("click", (event) => {
-  copyURL();
-});
+// // Adding copy function to the copy title button
+// document.getElementById("titleButton").addEventListener("click", (event) => {
+//   copyTitle();
+// })
 
-function copyURL(){
-  let thisText = document.getElementById("url").innerHTML;
-  copyText(thisText)
-}
+
+// function copyTitle(){
+  // let thisText = document.getElementById("title").innerHTML;
+  // copyText(thisText);
+// }
+
+// document.getElementById("siteButton").addEventListener("click", (event) => {
+//   copySite();
+// })
+
+// function copySite(){ 
+//   let thisText = document.getElementById("site_title").innerHTML;
+//   copyText(thisText);
+// }
+
+// document.getElementById("urlButton").addEventListener("click", (event) => {
+//   copyURL();
+// });
+
+// function copyURL(){
+//   let thisText = document.getElementById("url").innerHTML;
+//   copyText(thisText)
+// }
 
 
 function copyText(text){
-  var dummy = document.createElement("input");
+  if (text === ""){
+    let toast = document.getElementById("toast");
 
-  document.body.appendChild(dummy);
+    toast.innerHTML = "Empty String!"
 
-  dummy.setAttribute("id", "dummy_id");
+    toast.className = "show";
 
-  document.getElementById("dummy_id").value = text;
+   setTimeout(function() {
+      toast.className = toast.className.replace("show", "");
+    }, 3000);
+  } else {
+    var dummy = document.createElement("input");
+    document.body.appendChild(dummy);
+    dummy.setAttribute("id", "dummy_id");
+    document.getElementById("dummy_id").value = text;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
 
-  dummy.select();
 
-  document.execCommand("copy");
+    let toast = document.getElementById("toast");
+    toast.innerHTML = "Copied To Clipboard!";
+    toast.className = "show";
 
-  document.body.removeChild(dummy);
-
-
-  let toast = document.getElementById("toast");
-
-  console.log(toast);
-
-  toast.className = "show";
-
-  setTimeout(function() {
-    toast.className = toast.className.replace("show", "");
-  }, 3000);
+    setTimeout(function() {
+      toast.className = toast.className.replace("show", "");
+    }, 3000);
+  }
+  
 }
