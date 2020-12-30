@@ -36,27 +36,39 @@ chrome.runtime.onMessage.addListener(function(request, sender){
 
 window.onload = getMetas; // Injecting the script after the page loads completely
 
+// querying copy buttons to add event
 let copyBTNS = document.querySelectorAll(".cbtn");
 
 for (let i = 0; i < copyBTNS.length; i++){
+  // adding copy event to the copy buttons
   copyBTNS[i].addEventListener("click", (event) => {
     copyTitle2(event);
   });
 }
 
-
+/**
+ * selects and copies the desired text
+ * @param {event} e 
+ */
 function copyTitle2(e){
   let whichBtn = e.target;
+  // Selects the BUTTON element if the user
+  // clicks on the IMG inside the BUTTON node
   if (whichBtn.tagName == "IMG"){
-    whichBtn = whichBtn.parentElement;
+    whichBtn = whichBtn.parentElement; // The button is the parent to the img element
   }
+
+  /**
+   * Here the content of the target element id determined according to the 
+   * ID of the button
+   */
   whichBtn = whichBtn.getAttribute("id");
   if(whichBtn == "titleButton"){
     let thisText = document.getElementById("title").innerHTML;
     copyText(thisText);
   } else if (whichBtn == "siteButton"){
     try {
-      let thisText = document.getElementById("site_name").innerHTML;
+      let thisText = document.getElementById("site_title").innerHTML;
       copyText(thisText);
     } catch (TypeError) {
       copyText("");
@@ -65,42 +77,17 @@ function copyTitle2(e){
     let thisText = document.getElementById("url").innerHTML;
     copyText(thisText);
   }else {
-    console.log("Error")
+    console.log("Unknown Button")
   }
 }
-
-// // Adding copy function to the copy title button
-// document.getElementById("titleButton").addEventListener("click", (event) => {
-//   copyTitle();
-// })
-
-
-// function copyTitle(){
-  // let thisText = document.getElementById("title").innerHTML;
-  // copyText(thisText);
-// }
-
-// document.getElementById("siteButton").addEventListener("click", (event) => {
-//   copySite();
-// })
-
-// function copySite(){ 
-//   let thisText = document.getElementById("site_title").innerHTML;
-//   copyText(thisText);
-// }
-
-// document.getElementById("urlButton").addEventListener("click", (event) => {
-//   copyURL();
-// });
-
-// function copyURL(){
-//   let thisText = document.getElementById("url").innerHTML;
-//   copyText(thisText)
-// }
-
-
+/**
+ * copies the parameter to the clip board
+ * 
+ * @param {string} text 
+ */
 function copyText(text){
-  if (text === ""){
+  // Displays the appropriate toast if the field is empty
+  if (text == ""){
     let toast = document.getElementById("toast");
 
     toast.innerHTML = "Empty String!"
@@ -110,20 +97,23 @@ function copyText(text){
    setTimeout(function() {
       toast.className = toast.className.replace("show", "");
     }, 3000);
+    
   } else {
-    var dummy = document.createElement("input");
-    document.body.appendChild(dummy);
-    dummy.setAttribute("id", "dummy_id");
-    document.getElementById("dummy_id").value = text;
-    dummy.select();
-    document.execCommand("copy");
-    document.body.removeChild(dummy);
+    var dummy = document.createElement("input"); // Creates an input element
+    document.body.appendChild(dummy); // adds the element to the body
+    dummy.setAttribute("id", "dummy_id"); // sets the if og the element
+    document.getElementById("dummy_id").value = text; // gets the input element and sets its value to parameter
+    dummy.select(); // selects the content of the element
+    document.execCommand("copy"); // executes the copy command Ctrl+C
+    document.body.removeChild(dummy); // Removes the input element
 
 
-    let toast = document.getElementById("toast");
-    toast.innerHTML = "Copied To Clipboard!";
-    toast.className = "show";
+    let toast = document.getElementById("toast"); // selects the toast
+    toast.innerHTML = "Copied To Clipboard!"; // sets the text of the toast
+    toast.className = "show"; // shows the toats
 
+
+    // Hides the toast after 3 seconds = 3000 ms
     setTimeout(function() {
       toast.className = toast.className.replace("show", "");
     }, 3000);
