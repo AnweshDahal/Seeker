@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google%20Sans" type="text/css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter" type="text/css">
   <style>
-    body, html{
+    body,
+    html {
       font-family: "Google Sans", sans-serif;
       margin: 0;
       width: 400px;
@@ -15,7 +17,7 @@
       color: #292929;
     }
 
-    .btn{
+    .btn {
       border: none;
       outline: 0;
       background: none;
@@ -23,43 +25,46 @@
     }
 
 
-    header, .contents, footer{
+    header,
+    .contents,
+    footer {
       margin: 20px;
       padding: 5px;
       min-height: 32px;
       overflow: hidden;
     }
 
-    .contents{
+    .contents {
 
       border: 0.5px solid #efefef;
       border-radius: 8px;
       box-shadow: 0px 2px 4px #dddddd;
     }
-    header{
+
+    header {
       padding: 5px 10px;
     }
 
-    .logo-title{
+    .logo-title {
       font-size: 28px;
       font-weight: 600;
       line-height: 30px;
     }
 
-    .version{
+    .version {
       font-weight: 400;
       font-size: 16px;
       color: #666666;
     }
 
-    .contents{
+    .contents {
       margin-top: 0px;
       padding: 10px;
       display: flex;
       flex-direction: column;
     }
 
-    .contents .p-info{
+    .contents .p-info {
       margin-bottom: 5px;
       display: flex;
       align-items: center;
@@ -67,12 +72,12 @@
       padding-bottom: 10px;
     }
 
-    .contents .nob{
+    .contents .nob {
       border: none;
       padding-bottom: 0;
     }
 
-    .contents .p-info .p-info-text{
+    .contents .p-info .p-info-text {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -81,16 +86,16 @@
       width: 248px;
     }
 
-    .contents .p-info .p-info-title{
+    .contents .p-info .p-info-title {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
       margin-left: 5px;
       width: max-content;
-      
+
     }
 
-    .contents .p-info .btn{
+    .contents .p-info .btn {
       background-color: #9aeb9a;
       padding: 5px;
       height: 26px;
@@ -103,8 +108,8 @@
     .contents .p-info .btn:hover {
       box-shadow: 0px 1px 4px #aaaaaa;
     }
-    
-    footer{
+
+    footer {
       display: flex;
       align-items: center;
       margin: 0;
@@ -112,7 +117,7 @@
       color: #dddddd;
     }
 
-    footer a{
+    footer a {
       line-height: 15px;
       margin-left: 10px;
       text-decoration: none;
@@ -120,12 +125,12 @@
       font-family: 'Inter', sans-serif;
     }
 
-    footer a:hover{
+    footer a:hover {
       color: #ffffff;
       font-weight: 500;
     }
 
-    #toast{
+    #toast {
       font-family: 'Inter', sans-serif;
       visibility: hidden;
       min-width: 150px;
@@ -141,43 +146,75 @@
       bottom: 30px;
     }
 
-    .show{
+    .show {
       visibility: visible !important;
       -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
       animation: fadein 0.5s, fadeout 0.5s 2.5s;
     }
 
-    @-webkit-keyframes fadein{
-      from{bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;}
+    @-webkit-keyframes fadein {
+      from {
+        bottom: 0;
+        opacity: 0;
+      }
+
+      to {
+        bottom: 30px;
+        opacity: 1;
+      }
     }
 
-    @keyframes fadein{
-      from{bottom: 0px; opacity: 0;} to {bottom: 30px; opacity: 1;}
+    @keyframes fadein {
+      from {
+        bottom: 0px;
+        opacity: 0;
+      }
+
+      to {
+        bottom: 30px;
+        opacity: 1;
+      }
     }
 
-    @-webkit-keyframes fadeout{
-      from{bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;}
+    @-webkit-keyframes fadeout {
+      from {
+        bottom: 30px;
+        opacity: 1;
+      }
+
+      to {
+        bottom: 0;
+        opacity: 0;
+      }
     }
 
-    @keyframes fadeout{
-      from{bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;}
+    @keyframes fadeout {
+      from {
+        bottom: 30px;
+        opacity: 1;
+      }
+
+      to {
+        bottom: 0;
+        opacity: 0;
+      }
     }
-    
   </style>
   <title>Seeker</title>
 </head>
+
 <body>
   <header>
-    <div class="logo"><span class="logo-title">Seeker</span><span class="version">(v1.0.0)</span></div>
+    <div class="logo"><span class="logo-title">Seeker</span></div>
     <div class="platform">for <strong id="platform">Chrome</strong></div>
   </header>
   <div class="contents">
     <div class="p-info">
-      <span class="p-info-title"><strong>Title</strong>:</span><span class="p-info-text" id="title"></span> 
+      <span class="p-info-title"><strong>Title</strong>:</span><span class="p-info-text" id="title"></span>
       <button class="btn cbtn" id="titleButton"><img src="./content_copy-24px.svg" alt="Copy" width="16px"></button>
     </div>
     <div class="p-info">
-      <span class="p-info-title"><strong>Site</strong>:</span><span class="p-info-text" id="site_title"></span> 
+      <span class="p-info-title"><strong>Site</strong>:</span><span class="p-info-text" id="site_title"></span>
       <button class="btn cbtn" id="siteButton">
         <img src="./content_copy-24px.svg" alt="Copy" width="16px">
       </button>
@@ -195,4 +232,5 @@
   <div id="toast"></div>
   <script src="./popup.js"></script>
 </body>
+
 </html>
