@@ -18,7 +18,7 @@ Seeker🐙 is a Chrome extension that helps you to find a sites's data that help
 
 #### Microsoft Edge
 
-1. Go to the url `edge//extensions`
+1. Go to the url `edge://extensions`
 2. Enable **Developer mode** by enabling the toggle button at the bottom left corner of the window
 3. Click on the load unpacked button
 4. Navigate to the location where the extension folder is placed.
